@@ -11,6 +11,24 @@ const fighters = [
 
 const myFighterId = ref('');
 const opponentFighterId = ref('');
+
+const matches=ref([])
+let nextMatchId=1
+
+const registerMatch = () => {
+  if(!myFighterId.value || !opponentFighterId.value || !result.value){
+    return
+  }
+
+  matches.value.unshift({
+    id: nextMatchId++,
+    myFighterId: myFighterId.value,
+    opponentFighterId: opponentFighterId.value,
+    result: result.value,
+    })
+  
+    result.value='';
+  }
 </script>
 
 <template>
@@ -37,6 +55,18 @@ const opponentFighterId = ref('');
     <label><input type="radio" v-model="result" value="lose">負け</label>
   </fieldset>
   <p>選択した値：{{ result }}</p>
+
+  <button type="button" :disabled="!myFighterId || !opponentFighterId || !result" @click="registerMatch">登録する</button>
+
+  <h2>対戦記録{{ matches.length }}件</h2>
+  <ul>
+    <li v-for="match in mathches" :key="match.id">
+      {{ match.myFighterId }} vs {{ match.opponentFighterId }} - {{ match.result === 'win' ? '勝ち' : '負け' }}
+    </li>
+  </ul>
+  <ul>
+  
+</ul>
   </main>
 </template>
 
